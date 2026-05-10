@@ -11,7 +11,7 @@ const DashboardLayout = ({
     <div className="flex min-h-screen">
       <Sidebar />
 
-      <div className="flex-1 border">
+      <div className="flex-1">
         <Navbar />
 
         <main>

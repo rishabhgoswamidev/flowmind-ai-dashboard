@@ -1,3 +1,6 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -8,6 +11,8 @@ import {
 import Link from "next/link";
 
 const Sidebar = () => {
+  const pathname = usePathname();
+
   const sidebarLinks = [
     {
       id: 1,
@@ -42,19 +47,29 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="min-h-screen w-[250px] p-2 ">
-      <p className="p-2 font-bold text-2xl">FlowMind AI</p>
-      <div className="flex flex-col gap-2 mt-4">
-        {sidebarLinks?.map((item) => (
-          <Link
-            key={item.id}
-            href={item.href}
-            className="flex gap-4 p-2 items-center border border-transparent hover:border-gray-500 rounded-md transition-colors"
-          >
-            <item.icon size={20}/>
-            <span className="text-md text-base">{item.label}</span>
-          </Link>
-        ))}
+    <aside className="min-h-screen w-[250px] border-r bg-gray-100 p-4 text-black">
+      <p className="p-2 text-2xl font-bold">FlowMind AI</p>
+
+      <div className="mt-4 flex flex-col gap-2">
+        {sidebarLinks.map((item) => {
+          const isActive = pathname === item.href;
+
+          return (
+            <Link
+              key={item.id}
+              href={item.href}
+              className={`flex items-center gap-4 rounded-md border p-3 transition-colors ${
+                isActive
+                  ? "border-gray-300 bg-white font-medium"
+                  : "border-transparent hover:border-gray-300 hover:bg-white"
+              }`}
+            >
+              <item.icon size={20} />
+
+              <span className="text-base">{item.label}</span>
+            </Link>
+          );
+        })}
       </div>
     </aside>
   );
