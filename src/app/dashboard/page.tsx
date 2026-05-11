@@ -50,7 +50,7 @@ const DashboardPage = () => {
         <p className="text-gray-500 mt-2">Welcome back, Rishabh 👋</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mt-8">
         {statCardData?.map((item) => (
           <StatsCard
             key={item.label}
