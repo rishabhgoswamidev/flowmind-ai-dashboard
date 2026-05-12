@@ -81,7 +81,7 @@ git clone https://github.com/rishigoswamidev/flowmind-ai-dashboard.git
 ### Navigate into the project
 
 ```bash
-cd flowmind
+cd flowmind-ai-dashboard
 ```
 
 ### Install dependencies
