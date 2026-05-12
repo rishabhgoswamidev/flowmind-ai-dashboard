@@ -56,20 +56,6 @@ New features, UI improvements, and workflow enhancements are continuously being 
 
 ---
 
-## 📂 Project Structure
-
-```bash
-src/
- ├── app/
- ├── components/
- ├── hooks/
- ├── lib/
- ├── styles/
- └── utils/
-```
-
----
-
 ## ⚡ Getting Started
 
 ### Clone the repository
