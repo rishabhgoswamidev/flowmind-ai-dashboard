@@ -116,5 +116,5 @@ FlowMind aims to become a smart productivity workspace that combines AI assistan
 
 Rishabh Goswami
 
-- GitHub: https://github.com/rishigoswamidev
-- LinkedIn: https://linkedin.com/in/rishabhgoswamidev
+- GitHub: https://github.com/rishabhgoswamidev
+- LinkedIn: https://www.linkedin.com/in/rishigoswamidev/
