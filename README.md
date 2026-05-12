@@ -75,7 +75,7 @@ src/
 ### Clone the repository
 
 ```bash
-git clone https://github.com/rishigoswamidev/flowmind.git
+git clone https://github.com/rishigoswamidev/flowmind-ai-dashboard.git
 ```
 
 ### Navigate into the project
