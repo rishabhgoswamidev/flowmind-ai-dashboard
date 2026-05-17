@@ -1,18 +1,36 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+type TaskType = {
+  id: number;
+  text: string;
+  completed: boolean;
+};
 
 const Page = () => {
   const [input, setInput] = useState("");
+  const [tasks, setTasks] = useState<TaskType[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      text: "New Day",
-      completed: true,
-    },
-  ]);
+  useEffect(() => {
+  if (!isLoaded) return;
+
+  localStorage.setItem(
+    "Tasks Data",
+    JSON.stringify(tasks)
+  );
+}, [tasks, isLoaded]);
+
+  useEffect(() => {
+  const savedTasks = localStorage.getItem("Tasks Data");
+
+  if (savedTasks) {
+    setTasks(JSON.parse(savedTasks));
+  }
+  setIsLoaded(true)
+}, []);
 
   const handleCompleted = (id: number) => {
     const updatedTasks = tasks.map((task) => {

@@ -80,15 +80,14 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
     setOpen(false);
   };
 
-
   return (
     <div
       onClick={closeFunction}
-      className="fixed inset-0 flex items-center justify-center bg-black/20"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20"
     >
       <div
         onClick={handleNote}
-        className={`z-50 h-[400px] w-full max-w-lg rounded-xl p-6 shadow-xl ${randomColor}`}
+        className={`h-[400px] w-full max-w-lg rounded-xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.12)]  ${randomColor}`}
       >
         <textarea
           placeholder="Write something here..."
@@ -101,20 +100,25 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
           {selectedNote && (
             <button
               onClick={handleDelete}
-              className="rounded-md bg-black px-4 py-2 text-white"
+              className="rounded-md bg-black px-4 py-2 text-white cursor-pointer"
             >
               Delete
             </button>
           )}
           <button
             onClick={handleSave}
-            className="rounded-md bg-black px-4 py-2 text-white"
+            className="rounded-md bg-black px-4 py-2 text-white cursor-pointer"
           >
             {selectedNote ? "Update Note" : "Save Note"}
           </button>
         </div>
 
-        {deletePopup && <DeletePopup setDeletePopup={setDeletePopup} confirmDelete={confirmDelete}/>}
+        {deletePopup && (
+          <DeletePopup
+            setDeletePopup={setDeletePopup}
+            confirmDelete={confirmDelete}
+          />
+        )}
       </div>
     </div>
   );

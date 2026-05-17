@@ -44,7 +44,7 @@ const DashboardPage = () => {
   ];
 
   return (
-    <section className="p-8 max-w-7xl mx-auto bg-gray-50">
+    <section className="p-4 md:p-8 max-w-7xl mx-auto bg-gray-50">
       <div>
         <h1 className="text-3xl font-semibold">Dashboard</h1>
         <p className="text-gray-500 mt-2">Welcome back, Rishabh 👋</p>
@@ -63,22 +63,22 @@ const DashboardPage = () => {
             trendColor={item.trendColor}
           />
         ))}
-        <div className="col-span-1 xl:col-span-2 border rounded-md min-h-[350px] p-6">
-          <div className="flex items-start justify-between">
+        <div className="col-span-1 xl:col-span-2 min-w-0 border rounded-md min-h-[350px] p-4 md:p-6">
+          <div className="flex flex-col xl:flex-row gap-4 items-start xl:justify-between">
             <div>
               <h2 className="text-2xl font-semibold">Weekly Productivity</h2>
               <p className="text-sm text-gray-500 mt-1">
                 Track completed tasks throughout the week
               </p>
             </div>
-
+            
             <Dropdown />
+            
           </div>
           <ProductivityChart />
         </div>
 
-          <RecentActivity></RecentActivity>
-        
+        <RecentActivity/>
       </div>
     </section>
   );

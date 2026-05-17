@@ -21,9 +21,9 @@ const ProductivityChart = () => {
   ];
 
   return (
-    <div className="rounded-xl border bg-white pr-8  shadow-sm mt-6">
+    <div className="min-w-0 overflow-hidden rounded-xl border bg-white p-2 md:p-6 shadow-sm mt-6">
       {/* Chart */}
-      <div className="mt-8 h-[300px]">
+      <div className="mt-8 h-[300px] w-full">
         <ResponsiveContainer width="100%" height="100%">
           
           <LineChart data={chartData}>

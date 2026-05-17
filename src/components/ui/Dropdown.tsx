@@ -29,7 +29,7 @@ const Dropdown = () => {
       </button>
 
       {open && (
-        <div className="absolute bg-white border rounded-md text-sm z-50 top-full right-0 mt-2 w-40 overflow-hidden shadow-md">
+        <div className="absolute bg-white border rounded-md text-sm z-50 top-full xl:right-0 mt-2 w-40 overflow-hidden shadow-md">
           {dropdownList?.map((item) => (
             <button
               key={item}

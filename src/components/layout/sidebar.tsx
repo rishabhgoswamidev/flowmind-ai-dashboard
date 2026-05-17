@@ -6,9 +6,9 @@ import {
   ClipboardList,
   NotebookPen,
   Astroid,
-  Settings,
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -38,19 +38,16 @@ const Sidebar = () => {
       label: "AI Assistant",
       href: "/dashboard/ai",
     },
-    {
-      id: 5,
-      icon: Settings,
-      label: "Settings",
-      href: "/dashboard/settings",
-    },
   ];
 
   return (
-    <aside className="min-h-screen w-[250px] border-r bg-gray-100 p-4 text-black">
-      <p className="p-2 text-2xl font-bold">FlowMind AI</p>
+    <aside className="sticky top-0 h-screen w-[250px] hidden lg:block border-r bg-gray-100 p-4 text-black">
+      <Link href="/dashboard" className="flex items-center justify-start gap-3 cursor-pointer">
+        <Image src="/logo.png" alt="logo Image" width={32} height={32}></Image>
+        <p className="text-2xl font-bold">FlowMind AI</p>
+      </Link>
 
-      <div className="mt-4 flex flex-col gap-2">
+      <div className="mt-8 flex flex-col gap-2">
         {sidebarLinks.map((item) => {
           const isActive = pathname === item.href;
 

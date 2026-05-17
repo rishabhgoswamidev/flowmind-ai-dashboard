@@ -2,8 +2,9 @@
 
 import { Plus } from "lucide-react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NoteModel from "./NoteModel";
+import { json } from "stream/consumers";
 
 type NoteType = {
   id: number;
@@ -15,6 +16,21 @@ const page = () => {
   const [open, setOpen] = useState(false);
   const [notes, setNotes] = useState<NoteType[]>([]);
   const [selectedNote, setSelectedNote] = useState<NoteType | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+    localStorage.setItem("Notes Data", JSON.stringify(notes));
+  }, [notes, isLoaded]);
+
+  useEffect(() => {
+    const saveData = localStorage.getItem("Notes Data");
+
+    if (saveData) {
+      setNotes(JSON.parse(saveData));
+    }
+    setIsLoaded(true);
+  }, []);
 
   const handleNoteOpen = (id: number) => {
     const foundNote = notes.find((item) => item.id === id);
