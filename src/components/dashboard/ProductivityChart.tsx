@@ -9,17 +9,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const ProductivityChart = () => {
-  const chartData = [
-    { day: "Mon", tasks: 4 },
-    { day: "Tue", tasks: 7 },
-    { day: "Wed", tasks: 9 },
-    { day: "Thu", tasks: 2 },
-    { day: "Fri", tasks: 6 },
-    { day: "Sat", tasks: 8 },
-    { day: "Sun", tasks: 5 },
-  ];
+type Props = {
+  chartData: {
+    day: string;
+    tasks: number;
+  }[];
+};
 
+const ProductivityChart = ({chartData}:Props) => {
+  
   return (
     <div className="min-w-0 overflow-hidden rounded-xl border bg-white p-2 md:p-6 shadow-sm mt-6">
       {/* Chart */}

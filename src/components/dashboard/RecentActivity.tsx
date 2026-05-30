@@ -37,7 +37,7 @@ const RecentActivity = () => {
 ];
 
   return (
-    <div className="col-span-1 xl:col-span-2 border rounded-md min-h-[350px] p-6">
+    <div className="col-span-1 md:col-span-2 border rounded-md min-h-[350px] p-4 md:p-6">
       <h2 className="text-2xl font-semibold">Recent Activity</h2>
       <div className="flex flex-col gap-2 mt-4 w-full">
         {activityData?.map((item) => (
@@ -49,7 +49,7 @@ const RecentActivity = () => {
                 <item.icon />
               </div>
 
-              <p className="text-gray-800">
+              <p className="text-gray-800 text-sm">
                 {item.title}
               </p>
             </div>

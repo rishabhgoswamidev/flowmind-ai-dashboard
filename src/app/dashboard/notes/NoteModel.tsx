@@ -3,11 +3,7 @@
 import { useState } from "react";
 import DeletePopup from "@/components/ui/DeletePopup";
 
-type NoteType = {
-  id: number;
-  text: string;
-  bgColor: string;
-};
+import type { NoteType } from "@/types/dataTypes";
 
 type Props = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -87,27 +83,28 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
     >
       <div
         onClick={handleNote}
-        className={`h-[400px] w-full max-w-lg rounded-xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.12)]  ${randomColor}`}
+        className={`mx-4 flex h-[85vh] w-full max-w-lg flex-col rounded-xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] md:h-[400px] md:p-6 ${randomColor}`}
       >
         <textarea
           placeholder="Write something here..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="h-full w-full resize-none bg-transparent p-2 text-xl outline-none"
+          className="min-h-0 flex-1 resize-none bg-transparent p-2 text-lg outline-none md:text-xl"
         />
 
-        <div className="mt-6 flex gap-2 justify-end">
+        <div className="mt-4 flex flex-wrap justify-end gap-2 md:mt-6">
           {selectedNote && (
             <button
               onClick={handleDelete}
-              className="rounded-md bg-black px-4 py-2 text-white cursor-pointer"
+              className="rounded-md bg-black px-4 py-2 text-sm text-white md:text-base"
             >
               Delete
             </button>
           )}
+
           <button
             onClick={handleSave}
-            className="rounded-md bg-black px-4 py-2 text-white cursor-pointer"
+            className="rounded-md bg-black px-4 py-2 text-sm text-white md:text-base"
           >
             {selectedNote ? "Update Note" : "Save Note"}
           </button>

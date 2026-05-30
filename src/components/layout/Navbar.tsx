@@ -1,40 +1,21 @@
 "use client";
 
-import { Search, ToggleLeft, CircleUserRound } from "lucide-react";
-
+import { Search, ToggleLeft, CircleUserRound, Menu } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Image from "next/image";
+import { useAppContext } from "@/context/AppContext";
 
-type TaskType = {
-  id: number;
-  text: string;
-  completed: boolean;
+type Props = {
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type NoteType = {
-  id: number;
-  text: string;
-  bgColor: string;
-};
-
-const Navbar = () => {
+const Navbar = ({ setSidebarOpen }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [tasks, setTasks] = useState<TaskType[]>([]);
-  const [notes, setNotes] = useState<NoteType[]>([]);
   const searchRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const taskData = localStorage.getItem("Tasks Data");
-
-    const noteData = localStorage.getItem("Notes Data");
-
-    if (taskData) {
-      setTasks(JSON.parse(taskData));
-    }
-
-    if (noteData) {
-      setNotes(JSON.parse(noteData));
-    }
-  }, []);
+  const { tasks, notes } = useAppContext();
+  const router = useRouter();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -65,7 +46,15 @@ const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-10 flex h-20 gap-4 items-center justify-between border-b bg-white px-4 md:px-8">
-      <div ref={searchRef} className="relative flex-1 max-w-sm">
+      <Link
+        href="/dashboard"
+        className="flex items-center justify-start md:hidden gap-2 cursor-pointer"
+      >
+        <Image src="/logo.png" alt="logo Image" width={32} height={32}></Image>
+        <p className="text-lg md:text-2xl font-bold">FlowMind AI</p>
+      </Link>
+
+      <div ref={searchRef} className="relative flex-1 max-w-sm hidden md:block">
         <div className="flex h-11 items-center gap-2 rounded-full border border-gray-200 pr-4 transition focus-within:border-purple-400 focus-within:bg-white">
           <input
             type="text"
@@ -88,6 +77,9 @@ const Navbar = () => {
 
                 {filteredTasks.map((task) => (
                   <div
+                    onClick={() =>
+                      router.push(`/dashboard/tasks?id=${task.id}`)
+                    }
                     key={task.id}
                     className="cursor-pointer rounded-xl p-3 transition hover:bg-gray-100"
                   >
@@ -119,6 +111,9 @@ const Navbar = () => {
 
                 {filteredNotes.map((note) => (
                   <div
+                    onClick={() =>
+                      router.push(`/dashboard/notes?id=${note.id}`)
+                    }
                     key={note.id}
                     className="cursor-pointer rounded-xl p-3 transition hover:bg-gray-100"
                   >
@@ -140,15 +135,23 @@ const Navbar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <ToggleLeft
-          size={32}
-          className="cursor-pointer text-gray-700 transition-colors hover:text-black"
-        />
+        <div className="items-center hidden  md:flex gap-4">
+          <ToggleLeft
+            size={32}
+            className="cursor-pointer text-gray-700 transition-colors hover:text-black"
+          />
 
-        <CircleUserRound
-          size={32}
-          className="cursor-pointer text-gray-700 transition-colors hover:text-black"
-        />
+          <CircleUserRound
+            size={32}
+            className="cursor-pointer text-gray-700 transition-colors hover:text-black"
+          />
+        </div>
+        <div
+          onClick={() => setSidebarOpen((prev) => !prev)}
+          className="lg:hidden cursor-pointer"
+        >
+          <Menu />
+        </div>
       </div>
     </nav>
   );

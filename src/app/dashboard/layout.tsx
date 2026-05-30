@@ -1,22 +1,20 @@
+"use client";
+
 import Sidebar from "@/components/layout/Sidebar";
 import Navbar from "@/components/layout/Navbar";
 
-const DashboardLayout = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+import { useState } from "react";
+
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       <div className="flex-1">
-        <Navbar />
-
-        <main>
-          {children}
-        </main>
+        <Navbar setSidebarOpen={setSidebarOpen} />
+        <main>{children}</main>
       </div>
     </div>
   );
