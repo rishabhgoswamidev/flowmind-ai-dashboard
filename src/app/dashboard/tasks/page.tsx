@@ -3,11 +3,15 @@
 import { Plus } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAppContext } from "@/context/AppContext";
+import { useAppStore } from "@/store/useAppStore";
+import { ActivityType } from "@/types/dataTypes";
 
 const Page = () => {
   const [input, setInput] = useState("");
-  const { tasks, setTasks } = useAppContext();
+  const tasks = useAppStore((state) => state.tasks);
+  const setTasks = useAppStore((state) => state.setTasks);
+  const setActivities = useAppStore((state) => state.setActivities);
+  const activities = useAppStore((state) => state.activities);
   const [highlightedId, setHighlightedId] = useState<number | null>(null);
   const taskRefs = useRef<Record<number, HTMLDivElement | null>>({});
   const searchParams = useSearchParams();
@@ -33,22 +37,6 @@ const Page = () => {
     return () => clearTimeout(timeout);
   }, [taskId]);
 
-  const handleCompleted = (id: number) => {
-    setTasks((prev) =>
-      prev.map((task) => {
-        if (task.id !== id) return task;
-
-        const isNowCompleted = !task.completed;
-
-        return {
-          ...task,
-          completed: isNowCompleted,
-          completedAt: isNowCompleted ? new Date().toISOString() : undefined,
-        };
-      }),
-    );
-  };
-
   const handleForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -61,12 +49,65 @@ const Page = () => {
       createdAt: new Date().toISOString(),
     };
 
-    setTasks((prev) => [...prev, task]);
+    setTasks([...tasks, task]);
+
+    const activity: ActivityType = {
+      id: Date.now(),
+      action: `Created task "${task.text}"`,
+      type: "task",
+      createdAt: new Date().toISOString(),
+    };
+
+    setActivities([activity, ...activities]);
+
     setInput("");
   };
 
+  const handleCompleted = (id: number) => {
+    const currentTask = tasks.find((task) => task.id === id);
+
+    if (!currentTask) return;
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.id !== id) return task;
+
+      const isNowCompleted = !task.completed;
+
+      return {
+        ...task,
+        completed: isNowCompleted,
+        completedAt: isNowCompleted ? new Date().toISOString() : undefined,
+      };
+    });
+
+    const activity: ActivityType = {
+      id: Date.now(),
+      action: `Completed "${currentTask.text}"`,
+      type: "complete",
+      createdAt: new Date().toISOString(),
+    };
+
+    setActivities([activity, ...activities]);
+    setTasks(updatedTasks);
+  };
+
   const handleDelete = (id: number) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
+    const task = tasks.find((task) => task.id === id);
+
+    if (!task) return;
+
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+
+    const activity: ActivityType = {
+      id: Date.now(),
+      action: `Deleted task "${task.text}"`,
+      type: "delete",
+      createdAt: new Date().toISOString(),
+    };
+
+    setActivities([activity, ...activities]);
+
+    setTasks(updatedTasks);
   };
 
   return (

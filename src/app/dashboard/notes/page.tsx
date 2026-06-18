@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import NoteModel from "./NoteModel";
 import type { NoteType } from "@/types/dataTypes";
-import { useAppContext } from "@/context/AppContext";
+import { useAppStore } from "@/store/useAppStore";
 
 const Page = () => {
   const [open, setOpen] = useState(false);
@@ -13,7 +13,8 @@ const Page = () => {
   const noteRef = useRef<Record<number, HTMLDivElement | null>>({});
   const [highlightedId, setHighlightedId] = useState<number | null>(null);
   const [hasOpenedFromSearch, setHasOpenedFromSearch] = useState(false);
-  const { notes, setNotes } = useAppContext();
+  const notes = useAppStore((state) => state.notes);
+  const setNotes = useAppStore((state) => state.setNotes);
   const searchParams = useSearchParams();
   const noteId = searchParams.get("id");
 
@@ -85,13 +86,7 @@ const Page = () => {
         </button>
       </div>
 
-      {open && (
-        <NoteModel
-          setOpen={setOpen}
-          setNotes={setNotes}
-          selectedNote={selectedNote}
-        />
-      )}
+      {open && <NoteModel setOpen={setOpen} selectedNote={selectedNote} />}
 
       <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {notes.map((note) => (

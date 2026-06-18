@@ -2,7 +2,12 @@
 
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { TaskType, NoteType, ActivityType } from "@/types/dataTypes";
+import type {
+  TaskType,
+  NoteType,
+  ActivityType,
+  ConversationType,
+} from "@/types/dataTypes";
 
 type AppStore = {
   tasks: TaskType[];
@@ -13,6 +18,12 @@ type AppStore = {
 
   activities: ActivityType[];
   setActivities: (activities: ActivityType[]) => void;
+
+  conversations: ConversationType[];
+  setConversations: (conversations: ConversationType[]) => void;
+
+  activeConversationId: number | null;
+  setActiveConversationId: (id: number | null) => void;
 };
 
 export const useAppStore = create<AppStore>()(
@@ -21,6 +32,8 @@ export const useAppStore = create<AppStore>()(
       tasks: [],
       notes: [],
       activities: [],
+      conversations: [],
+      activeConversationId: null,
 
       setTasks: (tasks) =>
         set({
@@ -33,6 +46,14 @@ export const useAppStore = create<AppStore>()(
       setActivities: (activities) =>
         set({
           activities,
+        }),
+      setConversations: (conversations) =>
+        set({
+          conversations,
+        }),
+      setActiveConversationId: (activeConversationId) =>
+        set({
+          activeConversationId,
         }),
     }),
 

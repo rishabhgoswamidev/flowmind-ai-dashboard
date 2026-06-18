@@ -5,10 +5,10 @@ import { CalendarCheck, Check, Timer, NotebookPen } from "lucide-react";
 import Dropdown from "@/components/ui/Dropdown";
 import ProductivityChart from "@/components/dashboard/ProductivityChart";
 import RecentActivity from "@/components/dashboard/RecentActivity";
-import { useAppContext } from "@/context/AppContext";
+import { useAppStore } from "@/store/useAppStore";
 
 const DashboardPage = () => {
-  const { tasks, notes } = useAppContext();
+  const { tasks, notes } = useAppStore();
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
   const pendingTasks = tasks.filter((task) => !task.completed).length;
@@ -116,7 +116,7 @@ const DashboardPage = () => {
           <ProductivityChart chartData={chartData} />
         </div>
 
-        <RecentActivity />
+        <RecentActivity/>
       </div>
     </section>
   );

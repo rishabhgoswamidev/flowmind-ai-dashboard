@@ -5,7 +5,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useAppContext } from "@/context/AppContext";
+import {useAppStore} from "@/store/useAppStore"
 
 type Props = {
   setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +14,7 @@ type Props = {
 const Navbar = ({ setSidebarOpen }: Props) => {
   const [searchQuery, setSearchQuery] = useState("");
   const searchRef = useRef<HTMLDivElement>(null);
-  const { tasks, notes } = useAppContext();
+  const { tasks, notes } = useAppStore();
   const router = useRouter();
 
   useEffect(() => {

@@ -1,17 +1,23 @@
+// NoteModel.tsx
+
 "use client";
 
 import { useState } from "react";
 import DeletePopup from "@/components/ui/DeletePopup";
-
-import type { NoteType } from "@/types/dataTypes";
+import { useAppStore } from "@/store/useAppStore";
+import type { ActivityType, NoteType } from "@/types/dataTypes";
 
 type Props = {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setNotes: React.Dispatch<React.SetStateAction<NoteType[]>>;
   selectedNote: NoteType | null;
 };
 
-const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
+const NoteModal = ({ setOpen, selectedNote }: Props) => {
+  const notes = useAppStore((state) => state.notes);
+  const setNotes = useAppStore((state) => state.setNotes);
+  const activities = useAppStore((state) => state.activities);
+  const setActivities = useAppStore((state) => state.setActivities);
+
   const noteColors = [
     "bg-yellow-100",
     "bg-blue-100",
@@ -40,24 +46,32 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
     if (!input.trim()) return;
 
     if (selectedNote) {
-      setNotes((prev) =>
-        prev.map((note) =>
-          note.id === selectedNote.id
-            ? {
-                ...note,
-                text: input,
-              }
-            : note,
-        ),
+      const updatedNotes = notes.map((note) =>
+        note.id === selectedNote.id
+          ? {
+              ...note,
+              text: input,
+            }
+          : note,
       );
+
+      setNotes(updatedNotes);
     } else {
-      const note = {
+      const newNote = {
         id: Date.now(),
         text: input,
         bgColor: randomColor,
       };
 
-      setNotes((prev) => [...prev, note]);
+      const activity: ActivityType = {
+        id: Date.now(),
+        action: `Created note "${input.slice(0, 30)}"`,
+        type: "note",
+        createdAt: new Date().toISOString(),
+      };
+
+      setActivities([activity, ...activities]);
+      setNotes([...notes, newNote]);
     }
 
     setOpen(false);
@@ -70,7 +84,18 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
   const confirmDelete = () => {
     if (!selectedNote) return;
 
-    setNotes((prev) => prev.filter((note) => note.id !== selectedNote.id));
+    const updatedNotes = notes.filter((note) => note.id !== selectedNote.id);
+
+    const activity:ActivityType = {
+      id: Date.now(),
+      action: `Deleted note "${selectedNote.text.slice(0, 30)}"`,
+      type: "delete",
+      createdAt: new Date().toISOString(),
+    };
+
+    setActivities([activity, ...activities]);
+
+    setNotes(updatedNotes);
 
     setDeletePopup(false);
     setOpen(false);
@@ -83,20 +108,20 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
     >
       <div
         onClick={handleNote}
-        className={`mx-4 flex h-[85vh] w-full max-w-lg flex-col rounded-xl p-4 shadow-[0_8px_30px_rgba(0,0,0,0.12)] md:h-[400px] md:p-6 ${randomColor}`}
+        className={`h-[400px] w-full max-w-lg rounded-xl p-6 shadow-[0_8px_30px_rgba(0,0,0,0.12)] ${randomColor}`}
       >
         <textarea
           placeholder="Write something here..."
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="min-h-0 flex-1 resize-none bg-transparent p-2 text-lg outline-none md:text-xl"
+          className="h-full w-full resize-none bg-transparent p-2 text-xl outline-none"
         />
 
-        <div className="mt-4 flex flex-wrap justify-end gap-2 md:mt-6">
+        <div className="mt-6 flex justify-end gap-2">
           {selectedNote && (
             <button
               onClick={handleDelete}
-              className="rounded-md bg-black px-4 py-2 text-sm text-white md:text-base"
+              className="cursor-pointer rounded-md bg-black px-4 py-2 text-white"
             >
               Delete
             </button>
@@ -104,7 +129,7 @@ const NoteModal = ({ setOpen, setNotes, selectedNote }: Props) => {
 
           <button
             onClick={handleSave}
-            className="rounded-md bg-black px-4 py-2 text-sm text-white md:text-base"
+            className="cursor-pointer rounded-md bg-black px-4 py-2 text-white"
           >
             {selectedNote ? "Update Note" : "Save Note"}
           </button>
